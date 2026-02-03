@@ -1,199 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import {
-//   View,
-//   Text,
-//   FlatList,
-//   StyleSheet,
-//   TouchableOpacity,
-//   ActivityIndicator,
-// } from "react-native";
-// import { SafeAreaView } from "react-native-safe-area-context";
-// import Feather from "react-native-vector-icons/Feather";
-// import { useNavigation } from "@react-navigation/native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-// import axios from "axios";
-
-// export default function ServiceStatus() {
-//   const navigation = useNavigation();
-
-//   useEffect(() => {
-//     const checkStorage = async () => {
-//       const keys = await AsyncStorage.getAllKeys();
-//       const userid = await AsyncStorage.getItem("userid");
-
-//       console.log("STORAGE KEYS:", keys);
-//       console.log("MOBILE FROM STORAGE:", mobile);
-//     };
-
-//     checkStorage();
-//   }, []);
-
-//   const [data, setData] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   const Divider = () => <View style={styles.divider} />;
-
-//   const getRequests = async () => {
-
-//     try {
-
-//       setLoading(true);
-
-//       const formData = new FormData();
-//       const userid = await AsyncStorage.getItem("userid");
-
-//       formData.append("uniqueid", userid); // static
-
-//       console.log("Sending uniqueid:", userid);
-
-//       const res = await axios.post(
-
-//         "https://patilhardware.com/MobileWeb/userPreviousRequests",
-
-//         formData,
-
-//         {
-
-//           headers: {
-
-//             "Content-Type": "multipart/form-data",
-
-//           },
-
-//         }
-
-//       );
-
-//       console.log("API RESPONSE:", res.data);
-
-//       if (Array.isArray(res.data?.post)) {
-
-//         setData(res.data.post);
-
-//       } else {
-
-//         setData([]);
-
-//       }
-
-//     } catch (error) {
-
-//       console.log("API ERROR:", error.response?.data || error.message);
-
-//       setData([]);
-
-//     } finally {
-
-//       setLoading(false);
-
-//     }
-
-//   };
-
-
-
-//   useEffect(() => {
-//     getRequests();
-//   }, []);
-
-
-//   if (loading) {
-//     return (
-//       <View style={styles.loader}>
-//         <ActivityIndicator size="large" color="#F07C00" />
-//       </View>
-//     );
-//   }
-
-//   return (
-//     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
-//       <View style={styles.overlay}>
-//         <View style={styles.cardContainer}>
-//           {/* HEADER */}
-//           <View style={styles.header}>
-//             <Feather
-//               name="arrow-left"
-//               size={18}
-//               color="#000"
-//               onPress={() => navigation.goBack()}
-//             />
-//             <Text style={styles.headerTitle}>Request Status</Text>
-//           </View>
-
-//           <Divider />
-
-
-//           <FlatList
-//             data={data}
-//             keyExtractor={(item, index) => index.toString()}
-//             showsVerticalScrollIndicator={false}
-//             contentContainerStyle={{ paddingBottom: 20 }}
-//             ListEmptyComponent={
-//               <Text style={styles.emptyText}>No request Found</Text>
-//             }
-//             renderItem={({ item }) => (
-//               <View style={styles.statusCard}>
-//                 <View style={styles.row}>
-//                   <Text style={styles.label}>Request No</Text>
-//                   <Text style={styles.value}>- {item.request_no}</Text>
-//                 </View>
-
-//                 <View style={styles.row}>
-//                   <Text style={styles.label}>Service Name</Text>
-//                   <Text style={styles.value}>- {item.title}</Text>
-//                 </View>
-
-//                 <View style={styles.row}>
-//                   <Text style={styles.label}>Date</Text>
-//                   <Text style={styles.value}>- {item.post_date}</Text>
-//                 </View>
-//                 <View style={styles.bottomRow}>
-//                   <View style={styles.stars}>
-//                     {[1, 2, 3, 4, 5].map((i) => (
-//                       <Feather
-//                         key={i}
-//                         name="star"
-//                         size={15}
-//                         color={i <= Number(item.ratting) ? "#F07C00" : "#D9D9D9"}
-//                       />
-//                     ))}
-//                   </View>
-
-//                   <TouchableOpacity
-//                     style={[
-//                       styles.btn,
-//                       item.request_status === "0" && styles.btnDisabled,
-//                     ]}
-//                     disabled={item.request_status === "0"}
-//                     onPress={() =>
-//                       item.request_status !== "0" &&
-//                       navigation.navigate("RateService", {
-//                         requestId: item.request_no,
-//                       })
-//                     }
-//                   >
-//                     <Text
-//                       style={[
-//                         styles.btnText,
-//                         item.request_status === "0" && styles.btnTextDisabled,
-//                       ]}
-//                     >
-//                       {item.request_status === "0" ? "Pending" : "Completed"}
-//                     </Text>
-//                   </TouchableOpacity>
-//                 </View>
-
-//               </View>
-//             )}
-//           />
-//         </View>
-//       </View>
-//     </SafeAreaView>
-//   );
-// }
-
-
-
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -203,31 +7,37 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";  
-import Feather from "react-native-vector-icons/Feather"; 
-import { useNavigation } from "@react-navigation/native"; 
-import AsyncStorage from "@react-native-async-storage/async-storage"; 
+import { SafeAreaView } from "react-native-safe-area-context";
+import Feather from "react-native-vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+
 
 export default function ServiceStatus() {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+const [drawerOpen, setDrawerOpen] = useState(false);
+
+ const go = (screen) => {
+    setDrawerOpen(false);
+    navigation.navigate(screen);
+  };
 
   const getRequests = async () => {
     try {
       setLoading(true);
 
-    
       const uniqueid = await AsyncStorage.getItem("unique_id");
-      console.log("UNIQUE ID SENT:", uniqueid);
 
       const body = new URLSearchParams();
       body.append("uniqueid", uniqueid);
 
       const res = await axios.post(
         "https://patilhardware.com/MobileWeb/userPreviousRequests",
-        body,
+        body.toString(),
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -235,20 +45,30 @@ export default function ServiceStatus() {
         }
       );
 
-      console.log("API RESPONSE:", res.data);
-
-      setData(Array.isArray(res.data?.post) ? res.data.post : []);
+      if (res.data?.re === "true") {
+        setData(res.data.post || []);
+      } else {
+        setData([]);
+      }
     } catch (e) {
-      console.log("API ERROR:", e.message);
+      console.log("API ERROR:", e);
       setData([]);
     } finally {
       setLoading(false);
     }
   };
 
+
   useEffect(() => {
     getRequests();
   }, []);
+
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getRequests();
+    setRefreshing(false);
+  };
 
   if (loading) {
     return (
@@ -260,6 +80,17 @@ export default function ServiceStatus() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Patil Hardware </Text>
+
+        <TouchableOpacity onPress={() => setDrawerOpen(true)}>
+          <View style={styles.menuout}>
+            <Feather name="align-center" size={22} color="#fff" />
+          </View>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.cardContainer}>
         <View style={styles.header}>
           <Feather
@@ -272,13 +103,19 @@ export default function ServiceStatus() {
 
         <FlatList
           data={data}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           keyExtractor={(item) => item.request_no.toString()}
           ListEmptyComponent={
             <Text style={styles.emptyText}>No Request Found</Text>
           }
           renderItem={({ item }) => (
             <View style={styles.statusCard}>
-              <Text>Request No - {item.request_no}</Text>
+              <View style={styles.row}>
+                <Text style={styles.label}>Request No :</Text>
+                <Text style={styles.value}>{item.request_no}</Text>
+              </View>
+
               <Text>Service Name - {item.title}</Text>
               <Text>Date - {item.post_date}</Text>
 
@@ -299,20 +136,37 @@ export default function ServiceStatus() {
                 </View>
 
                 <TouchableOpacity
-                  style={styles.btn}
-                  disabled={item.requst_status === "0"}
+                  style={[
+                    styles.btn,
+                    item.requst_status === "1" && styles.btnDisabled
+                  ]}
+                  disabled={item.requst_status === "1"}
+                  onPress={() =>
+                    navigation.navigate("RateService", {
+                      requestNo: item.request_no,
+                      title: item.title,
+                      serviceId: item.service_id,
+                    })
+                  }
                 >
-                  <Text style={styles.btnText}>
-                    {item.requst_status === "0"
-                      ? "Pending"
-                      : "Completed"}
+                  <Text
+                    style={[
+                      styles.btnText,
+                      item.requst_status === "1" && styles.btnTextDisabled
+                    ]}
+                  >
+                    {item.requst_status === "0" ? "Rate Now" : "Completed"}
                   </Text>
                 </TouchableOpacity>
+
               </View>
             </View>
           )}
         />
       </View>
+
+
+      
     </SafeAreaView>
   );
 }

@@ -45,118 +45,57 @@ export default function VerifyOtp() {
     }
   };
 
-  const verifyOtp = async () => {
-    try {
-      setLoading(true);
+const verifyOtp = async () => {
+  try {
+    setLoading(true);
 
-   
-      const finalOtp = otp.join("");
+    const finalOtp = otp.join("");
 
-      if (finalOtp.length !== 4) {
-        Alert.alert("Error", "Please enter complete OTP");
-        setLoading(false);
-        return;
+    if (finalOtp.length !== 4) {
+      Alert.alert("Error", "Please enter complete OTP");
+      return;
+    }
+
+    const mobile = await AsyncStorage.getItem("mobile_no");
+
+    const body = new URLSearchParams();
+    body.append("otp", finalOtp);
+    body.append("mobile_no", mobile);
+
+    const response = await axios.post(
+      "https://patilhardware.com/MobileWeb/userotpVerify",
+      body.toString(),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       }
+    );
 
-      
-      const mobile = await AsyncStorage.getItem("mobile_no");
+    // ✅ axios gives data directly
+    const json = response.data;
 
-      console.log("FINAL OTP:", finalOtp);
-      console.log("MOBILE:", mobile);
+    console.log("OTP RESPONSE:", json);
 
-    
-      const body = new URLSearchParams();
-      body.append("otp", finalOtp);
-      body.append("mobile_no", mobile);
-
-      console.log("SENDING BODY:", body.toString());
-
-      const response = await axios.post(
-        "https://patilhardware.com/MobileWeb/otpVerify",
-        body.toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
+    if (json?.re === "true") {
+      await AsyncStorage.setItem(
+        "unique_id",
+        json?.data?.user_unique_id?.toString()
       );
 
-      console.log("OTP RESPONSE:", response.data);
-
-
-      if (response.status === 200) {
-
-        Alert.alert("Success", "Login Successful");
-        navigation.replace("ServiceStatus");
-      } else {
-        Alert.alert("Error", "Invalid OTP");
-      }
-    } catch (error) {
-      console.log("OTP ERROR:", error?.response || error);
-      Alert.alert("Error", "API call failed");
-    } finally {
-      setLoading(false);
+      Alert.alert("Success", "Login Successful");
+      navigation.replace("ServiceStatus");
+    } else {
+      Alert.alert("Error", json?.msg || "Invalid OTP");
     }
-  };
+  } catch (error) {
+    console.log("OTP ERROR:", error?.response || error);
+    Alert.alert("Error", "API call failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
-
-  // const verifyOtp = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     // ✅ OTP join
-  //     const finalOtp = otp.join("");
-
-  //     if (finalOtp.length !== 4) {
-  //       Alert.alert("Error", "Please enter complete OTP");
-  //       return;
-  //     }
-
-  //     // ✅ Mobile from storage
-  //     const mobile = await AsyncStorage.getItem("mobile_no");
-
-  //     console.log("FINAL OTP:", finalOtp);
-  //     console.log("MOBILE:", mobile);
-
-  //     // ✅ Form body (same as Postman)
-  //     const body = new URLSearchParams();
-  //     body.append("otp", finalOtp);
-  //     body.append("mobile_no", mobile);
-
-  //     console.log("SENDING BODY:", body.toString());
-
-  //     // ✅ API CALL
-  //     const response = await axios.post(
-  //       "https://patilhardware.com/MobileWeb/otpVerify",
-  //       body.toString(),
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/x-www-form-urlencoded",
-  //         },
-  //       }
-  //     );
-
-  //     console.log("OTP RESPONSE:", response.data);
-
-  //     // ✅ SUCCESS CHECK
-  //     if (response.status === 200) {
-  //       const userId = response.data?.data?.user_unique_id;
-
-  //       await AsyncStorage.setItem("uniqueid", userId.toString());
-  //       // await AsyncStorage.setItem("login_status", "true");
-
-  //       Alert.alert("Success", "Login Successful");
-  //       navigation.replace("ServiceStatus");
-  //     } else {
-  //       Alert.alert("Error", response.data?.msg || "Invalid OTP");
-  //     }
-  //   } catch (error) {
-  //     console.log("OTP ERROR:", error?.response || error);
-  //     Alert.alert("Error", "API call failed");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
 
 
@@ -252,8 +191,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "600",
     color: "#000",
-    borderColor:"#999999",
-    borderWidth:1,
+    borderColor: "#999999",
+    borderWidth: 1,
   },
 
   btn: {

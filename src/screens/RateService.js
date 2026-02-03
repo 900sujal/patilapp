@@ -36,11 +36,6 @@ export default function RateService() {
       const userid = await AsyncStorage.getItem("userid");
       const uniqueid = await AsyncStorage.getItem("unique_id");
 
-      console.log("USERID:", userid);
-      console.log("UNIQUE ID:", uniqueid);
-      console.log("REQUEST ID:", requestId);
-      console.log("RATING:", rating);
-
       const body = new URLSearchParams();
       body.append("userid", userid);
       body.append("requestid", requestId);
@@ -57,16 +52,14 @@ export default function RateService() {
         }
       );
 
-      console.log("RATING RESPONSE:", response.data);
-
-      if (response.status === 200) {
+      if (response.data?.re === "true") {
         Alert.alert("Success", "Thank you for rating!");
         navigation.goBack();
       } else {
         Alert.alert("Error", "Rating failed");
       }
     } catch (error) {
-      console.log("RATING ERROR:", error?.response || error);
+      console.log(error);
       Alert.alert("Error", "Something went wrong");
     } finally {
       setLoading(false);
