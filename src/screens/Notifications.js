@@ -8,6 +8,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Feather from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
+import CommonHeader from "../components/CommonHeader";
 
 const DATA = [
   { id: "1", name: "V", color: "#F07C00", time: "1 min" },
@@ -28,6 +29,11 @@ export default function Notification() {
      const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.safeArea}>
+
+        <CommonHeader
+              title="Patil Hardware"
+              navigation={navigation}
+            />
      
       <View style={styles.header}>
         <Feather name="arrow-left" size={18} color="#000000"  onPress={() => navigation.navigate("Home")}/>

@@ -17,6 +17,7 @@ import { Platform } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import CommonHeader from "../components/CommonHeader";
 
 export default function ServiceRequest() {
   const navigation = useNavigation();
@@ -63,7 +64,7 @@ export default function ServiceRequest() {
       !mobileno ||
       !address ||
       !landmark ||
-       ! serviceId ||
+      !serviceId ||
       !post_date ||
       !start_time ||
       !end_time
@@ -104,7 +105,7 @@ export default function ServiceRequest() {
       const json = await response.json();
       console.log("SERVICE RESPONSE ===>", json);
 
-      Alert.alert("Success", "OTP sent on your WhatsApp"); 
+      Alert.alert("Success", "OTP sent on your WhatsApp");
 
       await AsyncStorage.setItem("userid", json?.userid?.toString());
       await AsyncStorage.setItem("unique_id", json?.uniqueid?.toString());
@@ -130,6 +131,11 @@ export default function ServiceRequest() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
+      <CommonHeader
+        title="Patil Hardware"
+        navigation={navigation}
+      />
+
       <View style={styles.overlay}>
         <View style={styles.card}>
           {/* HEADER */}

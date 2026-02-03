@@ -12,6 +12,7 @@ import Feather from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import CommonHeader from "../components/CommonHeader";
 
 
 export default function ServiceStatus() {
@@ -19,12 +20,9 @@ export default function ServiceStatus() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-const [drawerOpen, setDrawerOpen] = useState(false);
+  
 
- const go = (screen) => {
-    setDrawerOpen(false);
-    navigation.navigate(screen);
-  };
+ 
 
   const getRequests = async () => {
     try {
@@ -81,15 +79,10 @@ const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <SafeAreaView style={styles.safeArea}>
 
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Patil Hardware </Text>
-
-        <TouchableOpacity onPress={() => setDrawerOpen(true)}>
-          <View style={styles.menuout}>
-            <Feather name="align-center" size={22} color="#fff" />
-          </View>
-        </TouchableOpacity>
-      </View>
+      <CommonHeader
+        title="Patil Hardware"
+        navigation={navigation}
+      />
 
       <View style={styles.cardContainer}>
         <View style={styles.header}>
@@ -166,7 +159,7 @@ const [drawerOpen, setDrawerOpen] = useState(false);
       </View>
 
 
-      
+
     </SafeAreaView>
   );
 }
