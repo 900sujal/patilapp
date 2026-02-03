@@ -139,7 +139,7 @@ export default function ServiceRequest() {
       <View style={styles.overlay}>
         <View style={styles.card}>
           {/* HEADER */}
-          <View style={styles.header}>
+          {/* <View style={styles.header}>
             <Feather
               name="arrow-left"
               size={18}
@@ -149,7 +149,7 @@ export default function ServiceRequest() {
             <Text style={styles.headerTitle}>Service Request Form</Text>
           </View>
 
-          <View style={styles.divider} />
+          <View style={styles.divider} /> */}
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.label}>Your Name</Text>
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 16,
     Height: "100%",
-    marginTop: 15,
+
 
 
   },
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     color: "#393939",
-    marginTop: 19,
+    marginTop: 7,
     marginBottom: 6,
     fontWeight: 500
   },

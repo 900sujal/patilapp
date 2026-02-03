@@ -86,12 +86,12 @@ export default function ServiceStatus() {
 
       <View style={styles.cardContainer}>
         <View style={styles.header}>
-          <Feather
+          {/* <Feather
             name="arrow-left"
             size={18}
             onPress={() => navigation.goBack()}
           />
-          <Text style={styles.headerTitle}>Request Status</Text>
+          <Text style={styles.headerTitle}>Request Status</Text> */}
         </View>
 
         <FlatList
@@ -118,7 +118,7 @@ export default function ServiceStatus() {
                     <Feather
                       key={i}
                       name="star"
-                      size={14}
+                      size={17}
                       color={
                         i <= Number(item.ratting)
                           ? "#F07C00"
@@ -194,10 +194,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 12,
-    marginBottom: 10,
+    marginBottom: 15,
     borderColor: "#E8E8E8",
     borderWidth: 1,
-    marginTop: 15,
+    
   },
   row: {
     flexDirection: "row",

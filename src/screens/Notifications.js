@@ -25,21 +25,20 @@ const DATA = [
 ];
 
 export default function Notification() {
-    const Divider = () => <View style={styles.divider} />;
-     const navigation = useNavigation();
+  const Divider = () => <View style={styles.divider} />;
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.safeArea}>
 
-        <CommonHeader
-              title="Patil Hardware"
-              navigation={navigation}
-            />
-     
+      <CommonHeader
+        title="Patil Hardware"
+        navigation={navigation}
+      />
+
       <View style={styles.header}>
-        <Feather name="arrow-left" size={18} color="#000000"  onPress={() => navigation.navigate("Home")}/>
-        <Text style={styles.headerTitle}>Notification</Text>
+
       </View>
-  <Divider />
+
       <FlatList
         data={DATA}
         keyExtractor={(item) => item.id}
@@ -58,9 +57,9 @@ export default function Notification() {
             </View>
 
             <Text style={styles.time}>{item.time}</Text>
-            
+
           </View>
-          
+
         )}
       />
     </SafeAreaView>
@@ -123,10 +122,10 @@ const styles = StyleSheet.create({
     color: "#777",
     marginLeft: 6,
   },
-   divider: {
+  divider: {
     height: 1,
     backgroundColor: "#EBEBEB",
-     width: "900",
-    marginLeft:-16
+    width: "900",
+    marginLeft: -16
   },
 });
