@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,44 +6,62 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   ActivityIndicator,
-} from "react-native";
-import Feather from "react-native-vector-icons/Feather";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Platform } from "react-native";
-
-import { useNavigation, useRoute } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SafeAreaView } from "react-native-safe-area-context";
-import CommonHeader from "../components/CommonHeader";
+  Platform,
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import CommonHeader from '../components/CommonHeader';
+import AppModal from '../components/AppModal';
 
 export default function ServiceRequest() {
   const navigation = useNavigation();
   const route = useRoute();
+
   const [showDate, setShowDate] = useState(false);
   const [showStartTime, setShowStartTime] = useState(false);
   const [showEndTime, setShowEndTime] = useState(false);
-
-
-
-  const serviceId = route?.params?.id;
-
   const [loading, setLoading] = useState(false);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalType, setModalType] = useState('success');
+  const [afterCloseAction, setAfterCloseAction] = useState(null);
+
+  const serviceId = route?.params?.id || '';
+  const serviceName = route?.params?.serviceName || '';
+
   const [form, setForm] = useState({
-    username: "",
-    mobileno: "",
-    address: "",
-    landmark: "",
-    post_date: "",
-    start_time: "",
-    end_time: "",
-    serviceId: "",
+    username: '',
+    mobileno: '',
+    address: '',
+    landmark: '',
+    post_date: '',
+    start_time: '',
+    end_time: '',
+    serviceId: serviceId,
+    serviceName: serviceName,
   });
 
+  const showModal = (message, type = 'success') => {
+    setModalMessage(message);
+    setModalType(type);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+
+    if (afterCloseAction) {
+      afterCloseAction();
+      setAfterCloseAction(null);
+    }
+  };
+
   const handleChange = (key, value) => {
-    setForm({ ...form, [key]: value });
+    setForm(prev => ({ ...prev, [key]: value }));
   };
 
   const handleSubmit = async () => {
@@ -69,7 +86,7 @@ export default function ServiceRequest() {
       !start_time ||
       !end_time
     ) {
-      Alert.alert("Error", "All fields are required");
+      showModal('All fields are required', 'warning');
       return;
     }
 
@@ -77,87 +94,77 @@ export default function ServiceRequest() {
       setLoading(true);
 
       const body = new URLSearchParams();
-      body.append("username", username);
-      body.append("serviceid", serviceId);
-      body.append("mobileno", mobileno);
-      body.append("address", address);
-      body.append("landmark", landmark);
-      body.append("post_date", post_date);
-      body.append("start_time", start_time);
-      body.append("end_time", end_time);
-      body.append("unique_id", "");
+      body.append('username', username);
+      body.append('serviceid', serviceId);
+      body.append('mobileno', mobileno);
+      body.append('address', address);
+      body.append('landmark', landmark);
+      body.append('post_date', post_date);
+      body.append('start_time', start_time);
+      body.append('end_time', end_time);
+      body.append('unique_id', '');
       body.append(
-        "gcm_id",
-        "cu4BMzQEqLo:APA91bENusFSumQlKyzy_pmxOybtNk2XvWS4rRodpTv1X4E3Fx3Wo1YCiF-iSUQqnLaiTWUtaWqfELX_os0CuaOSJ2TDRHMYXWevr-0y9HohF86pSEIchGBl5Y9I7HNATnNsjp3eks5S"
+        'gcm_id',
+        'cu4BMzQEqLo:APA91bENusFSumQlKyzy_pmxOybtNk2XvWS4rRodpTv1X4E3Fx3Wo1YCiF-iSUQqnLaiTWUtaWqfELX_os0CuaOSJ2TDRHMYXWevr-0y9HohF86pSEIchGBl5Y9I7HNATnNsjp3eks5S',
       );
 
       const response = await fetch(
-        "https://patilhardware.com/MobileWeb/serviceRequestNew",
+        'https://patilhardware.com/MobileWeb/serviceRequestNew',
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: body.toString(),
-        }
+        },
       );
 
       const json = await response.json();
-      console.log("SERVICE RESPONSE ===>", json);
+      console.log('SERVICE RESPONSE ===>', json);
 
-      Alert.alert("Success", "OTP sent on your WhatsApp");
+      await AsyncStorage.setItem('userid', json?.userid?.toString() || '');
+      await AsyncStorage.setItem('unique_id', json?.uniqueid?.toString() || '');
 
-      await AsyncStorage.setItem("userid", json?.userid?.toString());
-      await AsyncStorage.setItem("unique_id", json?.uniqueid?.toString());
-
-      navigation.navigate("Otp");
+      setAfterCloseAction(() => () => navigation.navigate('Otp'));
+      showModal('OTP sent on your WhatsApp', 'success');
     } catch (error) {
-      console.log("Service Error:", error);
-      Alert.alert("Error", "Something went wrong");
+      console.log('Service Error:', error);
+      showModal('Something went wrong', 'error');
     } finally {
       setLoading(false);
     }
   };
-  const formatDate = (date) => {
+
+  const formatDate = date => {
     const d = new Date(date);
-    return d.toISOString().split("T")[0];
+    return d.toISOString().split('T')[0];
   };
 
-  const formatTime = (date) => {
+  const formatTime = date => {
     const d = new Date(date);
-    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return d.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   };
-
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={["top"]}>
-      <CommonHeader
-        title="Patil Hardware"
-        navigation={navigation}
-      />
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <CommonHeader title="Patil Hardware" navigation={navigation} />
 
       <View style={styles.overlay}>
         <View style={styles.card}>
-          {/* HEADER */}
-          {/* <View style={styles.header}>
-            <Feather
-              name="arrow-left"
-              size={18}
-              color="#000"
-              onPress={() => navigation.goBack()}
-            />
-            <Text style={styles.headerTitle}>Service Request Form</Text>
-          </View>
-
-          <View style={styles.divider} /> */}
-
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          >
             <Text style={styles.label}>Your Name</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter your name"
+              placeholderTextColor="#8a8a8a"
               value={form.username}
-              onChangeText={(v) => handleChange("username", v)}
+              onChangeText={v => handleChange('username', v)}
             />
 
             <Text style={styles.label}>Mobile Number</Text>
@@ -167,17 +174,17 @@ export default function ServiceRequest() {
               keyboardType="number-pad"
               maxLength={10}
               value={form.mobileno}
-              onChangeText={(v) => handleChange("mobileno", v)}
+              placeholderTextColor="#8a8a8a"
+              onChangeText={v => handleChange('mobileno', v)}
             />
 
             <Text style={styles.label}>Date</Text>
-
             <TouchableOpacity
               style={styles.input}
               onPress={() => setShowDate(true)}
             >
-              <Text style={{ color: form.post_date ? "#000" : "#999" }}>
-                {form.post_date || "Select Date"}
+              <Text style={{ color: form.post_date ? '#000' : '#999' }}>
+                {form.post_date || 'Select Date'}
               </Text>
             </TouchableOpacity>
 
@@ -185,40 +192,36 @@ export default function ServiceRequest() {
               <DateTimePicker
                 value={new Date()}
                 mode="date"
-                display={Platform.OS === "ios" ? "spinner" : "default"}
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 onChange={(event, selectedDate) => {
                   setShowDate(false);
                   if (selectedDate) {
-                    handleChange("post_date", formatDate(selectedDate));
+                    handleChange('post_date', formatDate(selectedDate));
                   }
                 }}
               />
             )}
 
             <Text style={styles.label}>Preferred Time</Text>
-
             <View style={styles.row}>
-
               <TouchableOpacity
-                style={[styles.input, { flex: 1 }]}
+                style={[styles.input, styles.timeInput]}
                 onPress={() => setShowStartTime(true)}
               >
-                <Text style={{ color: form.start_time ? "#000" : "#999" }}>
-                  {form.start_time || "Start Time"}
+                <Text style={{ color: form.start_time ? '#000' : '#999' }}>
+                  {form.start_time || 'Start Time'}
                 </Text>
               </TouchableOpacity>
 
-
               <TouchableOpacity
-                style={[styles.input, { flex: 1 }]}
+                style={[styles.input, styles.timeInput]}
                 onPress={() => setShowEndTime(true)}
               >
-                <Text style={{ color: form.end_time ? "#000" : "#999" }}>
-                  {form.end_time || "End Time"}
+                <Text style={{ color: form.end_time ? '#000' : '#999' }}>
+                  {form.end_time || 'End Time'}
                 </Text>
               </TouchableOpacity>
             </View>
-
 
             {showStartTime && (
               <DateTimePicker
@@ -228,7 +231,7 @@ export default function ServiceRequest() {
                 onChange={(event, selectedTime) => {
                   setShowStartTime(false);
                   if (selectedTime) {
-                    handleChange("start_time", formatTime(selectedTime));
+                    handleChange('start_time', formatTime(selectedTime));
                   }
                 }}
               />
@@ -242,19 +245,19 @@ export default function ServiceRequest() {
                 onChange={(event, selectedTime) => {
                   setShowEndTime(false);
                   if (selectedTime) {
-                    handleChange("end_time", formatTime(selectedTime));
+                    handleChange('end_time', formatTime(selectedTime));
                   }
                 }}
               />
             )}
 
-
             <Text style={styles.label}>Service</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter Serivce"
-              value={form.serviceId}
-              onChangeText={(v) => handleChange("serceIdvId", v)}
+              placeholder="Selected Service"
+              placeholderTextColor="#8a8a8a"
+              value={form.serviceName}
+              editable={false}
             />
 
             <Text style={styles.label}>Address</Text>
@@ -262,7 +265,8 @@ export default function ServiceRequest() {
               style={styles.input}
               placeholder="Enter address"
               value={form.address}
-              onChangeText={(v) => handleChange("address", v)}
+              placeholderTextColor="#8a8a8a"
+              onChangeText={v => handleChange('address', v)}
             />
 
             <Text style={styles.label}>Landmark</Text>
@@ -270,7 +274,8 @@ export default function ServiceRequest() {
               style={styles.input}
               placeholder="Enter landmark"
               value={form.landmark}
-              onChangeText={(v) => handleChange("landmark", v)}
+              placeholderTextColor="#8a8a8a"
+              onChangeText={v => handleChange('landmark', v)}
             />
 
             <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
@@ -283,115 +288,89 @@ export default function ServiceRequest() {
           </ScrollView>
         </View>
       </View>
+
+      <AppModal
+        visible={modalVisible}
+        message={modalMessage}
+        type={modalType}
+        onClose={handleCloseModal}
+      />
     </SafeAreaView>
   );
 }
 
-
 const styles = StyleSheet.create({
-  overlay: {
-
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   safeArea: {
     flex: 1,
-    backgroundColor: "#FDFDFD",
+    backgroundColor: '#FDFDFD',
+  },
+
+  overlay: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
   },
 
   card: {
-    width: "95%",
-    backgroundColor: "#fff",
+    width: '95%',
+    backgroundColor: '#fff',
     borderRadius: 18,
     padding: 16,
-    Height: "100%",
-
-
-
-  },
-
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-
-  },
-
-  headerTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    marginLeft: 12,
-    color: "#000000",
+    height: '100%',
   },
 
   label: {
     fontSize: 13,
-    color: "#393939",
+    color: '#393939',
     marginTop: 7,
     marginBottom: 6,
-    fontWeight: 500
+    fontWeight: '500',
   },
 
   input: {
-    backgroundColor: "#F9F9F9",
+    backgroundColor: '#F9F9F9',
     borderRadius: 8,
     paddingHorizontal: 15,
     height: 44,
     fontSize: 14,
-    color: "black",
+    color: '#000',
     marginTop: 10,
-    borderColor: "#E8E8E8",
+    borderColor: '#E8E8E8',
     borderWidth: 1,
-
-  },
-
-  iconInput: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F6F6F6",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    height: 44,
-    gap: 10
-  },
-
-  flexInput: {
-    flex: 1,
-    fontSize: 14,
-    color: "#000",
+    justifyContent: 'center',
   },
 
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 10,
   },
 
-  textArea: {
-    height: 80,
-    textAlignVertical: "top",
+  timeInput: {
+    flex: 1,
   },
 
   btn: {
-    backgroundColor: "#F07C00",
+    backgroundColor: '#F07C00',
     height: 55,
     borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 30,
     marginBottom: 10,
   },
 
   btnText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: '600',
   },
+
   divider: {
     height: 1,
-    backgroundColor: "#EBEBEB",
-    width: "900",
+    backgroundColor: '#EBEBEB',
+    width: '900',
     marginLeft: -22,
-    marginTop: 13
+    marginTop: 13,
   },
 });

@@ -1,39 +1,57 @@
-
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   Image,
   ActivityIndicator,
-} from "react-native";
-import React, { useState, useRef, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
+} from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AppModal from '../components/AppModal';
 
 export default function VerifyOtp() {
   useEffect(() => {
     const checkStorage = async () => {
       const keys = await AsyncStorage.getAllKeys();
-      const mobile = await AsyncStorage.getItem("mobile_no");
+      const mobile = await AsyncStorage.getItem('mobile_no');
 
-      console.log("STORAGE KEYS:", keys);
-      console.log("MOBILE FROM STORAGE:", mobile);
+      console.log('STORAGE KEYS:', keys);
+      console.log('MOBILE FROM STORAGE:', mobile);
     };
 
     checkStorage();
   }, []);
 
-
   const navigation = useNavigation();
 
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(['', '', '', '']);
   const [loading, setLoading] = useState(false);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalType, setModalType] = useState('success');
+  const [afterCloseAction, setAfterCloseAction] = useState(null);
+
   const inputs = useRef([]);
+
+  const showModal = (message, type = 'success') => {
+    setModalMessage(message);
+    setModalType(type);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+
+    if (afterCloseAction) {
+      afterCloseAction();
+      setAfterCloseAction(null);
+    }
+  };
 
   const handleChange = (text, index) => {
     const newOtp = [...otp];
@@ -45,65 +63,61 @@ export default function VerifyOtp() {
     }
   };
 
-const verifyOtp = async () => {
-  try {
-    setLoading(true);
+  const verifyOtp = async () => {
+    try {
+      setLoading(true);
 
-    const finalOtp = otp.join("");
+      const finalOtp = otp.join('');
 
-    if (finalOtp.length !== 4) {
-      Alert.alert("Error", "Please enter complete OTP");
-      return;
-    }
-
-    const mobile = await AsyncStorage.getItem("mobile_no");
-
-    const body = new URLSearchParams();
-    body.append("otp", finalOtp);
-    body.append("mobile_no", mobile);
-
-    const response = await axios.post(
-      "https://patilhardware.com/MobileWeb/userotpVerify",
-      body.toString(),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+      if (finalOtp.length !== 4) {
+        showModal('Please enter complete OTP', 'warning');
+        return;
       }
-    );
 
-    // ✅ axios gives data directly
-    const json = response.data;
+      const mobile = await AsyncStorage.getItem('mobile_no');
 
-    console.log("OTP RESPONSE:", json);
+      const body = new URLSearchParams();
+      body.append('otp', finalOtp);
+      body.append('mobile_no', mobile);
 
-    if (json?.re === "true") {
-      await AsyncStorage.setItem(
-        "unique_id",
-        json?.data?.user_unique_id?.toString()
+      const response = await axios.post(
+        'https://patilhardware.com/MobileWeb/userotpVerify',
+        body.toString(),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        },
       );
 
-      Alert.alert("Success", "Login Successful");
-      navigation.replace("ServiceStatus");
-    } else {
-      Alert.alert("Error", json?.msg || "Invalid OTP");
+      const json = response.data;
+
+      console.log('OTP RESPONSE:', json);
+
+      if (json?.re === 'true') {
+        await AsyncStorage.setItem(
+          'unique_id',
+          json?.data?.user_unique_id?.toString(),
+        );
+
+        setAfterCloseAction(() => () => navigation.replace('ServiceStatus'));
+        showModal('Login Successful', 'success');
+      } else {
+        showModal(json?.msg || 'Invalid OTP', 'error');
+      }
+    } catch (error) {
+      console.log('OTP ERROR:', error?.response || error);
+      showModal('API call failed', 'error');
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.log("OTP ERROR:", error?.response || error);
-    Alert.alert("Error", "API call failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <Image
-          source={require("../assets/images/patilapplogo.png")}
+          source={require('../assets/images/patilapplogo.png')}
           style={styles.logo}
         />
 
@@ -113,12 +127,12 @@ const verifyOtp = async () => {
           {otp.map((digit, index) => (
             <TextInput
               key={index}
-              ref={(ref) => (inputs.current[index] = ref)}
+              ref={ref => (inputs.current[index] = ref)}
               style={styles.otpInput}
               keyboardType="number-pad"
               maxLength={1}
               value={digit}
-              onChangeText={(text) => handleChange(text, index)}
+              onChangeText={text => handleChange(text, index)}
             />
           ))}
         </View>
@@ -131,54 +145,58 @@ const verifyOtp = async () => {
           )}
         </TouchableOpacity>
       </View>
+
+      <AppModal
+        visible={modalVisible}
+        message={modalMessage}
+        type={modalType}
+        onClose={handleCloseModal}
+      />
     </View>
   );
 }
 
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
 
   card: {
-    width: "100%",
-    backgroundColor: "#fff",
+    width: '100%',
+    backgroundColor: '#fff',
     borderRadius: 16,
     paddingVertical: 30,
     paddingHorizontal: 20,
-    alignItems: "center",
+    alignItems: 'center',
     elevation: 6,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 5 },
   },
 
   logo: {
-    width: "180",
-    height: "170",
-    resizeMode: "contain",
-    marginBottom: 15,
-  },
+  width: 180,
+  height: 170,
+  resizeMode: 'contain',
+  marginBottom: 15,
+},
 
   title: {
     fontSize: 22,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 20,
-    color: "#000",
+    color: '#000',
   },
 
   otpRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
     marginBottom: 25,
   },
 
@@ -186,27 +204,27 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 7,
-    backgroundColor: "#F1F1F1",
-    textAlign: "center",
+    backgroundColor: '#F1F1F1',
+    textAlign: 'center',
     fontSize: 25,
-    fontWeight: "600",
-    color: "#000",
-    borderColor: "#999999",
+    fontWeight: '600',
+    color: '#000',
+    borderColor: '#999999',
     borderWidth: 1,
   },
 
   btn: {
-    backgroundColor: "#3F5E9A",
-    width: "100%",
+    backgroundColor: '#3F5E9A',
+    width: '100%',
     height: 50,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   btnText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
