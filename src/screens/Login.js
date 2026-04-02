@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,6 +14,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppModal from '../components/AppModal';
 
 export default function Login() {
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
+  const checkLogin = async () => {
+    try {
+      const unique_id = await AsyncStorage.getItem('unique_id');
+
+      if (unique_id) {
+        // 👉 already logged in → skip login screen
+        navigation.replace('Home');
+      }
+    } catch (error) {
+      console.log('Check Login Error:', error);
+    }
+  };
+
   const navigation = useNavigation();
 
   const [mobile, setMobile] = useState('');
@@ -68,10 +87,10 @@ export default function Login() {
         await AsyncStorage.setItem('mobile_no', mobile);
         await AsyncStorage.setItem('otp', json?.otp?.toString());
 
-        setAfterCloseAction(() => () => navigation.navigate('Otpverification'));
+        setAfterCloseAction(() => () => navigation.replace('Otpverification'));
         showModal('OTP Sent on Your WhatsApp', 'success');
       } else {
-        setAfterCloseAction(() => () => navigation.navigate('Home'));
+        setAfterCloseAction(() => () => navigation.replace('Home'));
         showModal(json?.msg || 'Login failed', 'error');
       }
     } catch (error) {
