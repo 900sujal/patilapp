@@ -5,8 +5,10 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import colors from "../theme/colors";
+import LinearGradient from "react-native-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import RenderHTML from "react-native-render-html";
@@ -38,121 +40,117 @@ export default function TermsScreen() {
   }, []);
 
   return (
-    <SafeAreaView edges={["top"]} style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <View style={styles.card}>
 
-          <Text style={styles.title}>Term & Conditions</Text>
+        {/* Title */}
+        <Text style={styles.title}>Terms & Conditions</Text>
+        <View style={styles.divider} />
 
-
-          <View style={styles.divider} />
-
-
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {loading ? (
-              <Text style={{ textAlign: "center", marginTop: 20 }}>
-                Loading...
-              </Text>
-            ) : (
+        {/* Scrollable Content */}
+        <View style={styles.scrollContainer}>
+          {loading ? (
+            <ActivityIndicator size="large" color={colors.orange} />
+          ) : (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 20 }}
+            >
               <RenderHTML
                 contentWidth={width}
                 source={{ html: data?.post || "" }}
                 tagsStyles={{
+                  p: {
+                    fontSize: 14,
+                    color: "#444",
+                    lineHeight: 22,
+                    marginBottom: 10,
+                  },
                   li: {
-                    fontSize: 12,
-                    color: "#393939",
-                    lineHeight: 20,
+                    fontSize: 14,
+                    color: "#444",
+                    lineHeight: 22,
                     marginBottom: 8,
                   },
                   ul: {
-                    paddingLeft: 20,
+                    paddingLeft: 18,
                   },
                 }}
               />
-            )}
-          </ScrollView>
+            </ScrollView>
+          )}
+        </View>
 
-
-          <TouchableOpacity
+        {/* Bottom Button */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate("Home")}
+          style={styles.shadowWrapper}
+        >
+          <LinearGradient
+            colors={["#F07C00", "#FF9A2A"]} // gradient colors
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
             style={styles.btn}
-            onPress={() => navigation.navigate("Home")}
           >
             <Text style={styles.btnText}>Continue</Text>
-          </TouchableOpacity>
-        </View>
+          </LinearGradient>
+        </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
 }
 
-
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-
-
-    width: "100%"
-  },
   safeArea: {
     flex: 1,
     backgroundColor: "#fff",
   },
 
-  card: {
+  container: {
     flex: 1,
-    backgroundColor: colors.white,
-    borderRadius: 18,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 10,
   },
 
   title: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#222",
+    marginBottom: 6,
   },
 
   divider: {
     height: 1,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#eee",
     marginBottom: 10,
   },
 
-  row: {
-    flexDirection: "row",
-    marginBottom: 12,
-    alignItems: "flex-start",
-  },
-
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: colors.orange,
-    marginTop: 6,
-    marginRight: 10,
-  },
-
-  text: {
+  scrollContainer: {
     flex: 1,
-    fontSize: 12,
-    color: "#393939",
-    lineHeight: 20,
+  },
+
+  shadowWrapper: {
+    borderRadius: 30,
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    marginBottom: 10,
   },
 
   btn: {
-    backgroundColor: "#F07C00",
     paddingVertical: 14,
     borderRadius: 30,
     alignItems: "center",
-  
   },
 
   btnText: {
-    color: "#FFFFFF",
+    color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
+    letterSpacing: 0.5,
   },
 });

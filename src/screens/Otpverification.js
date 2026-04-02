@@ -156,10 +156,11 @@ export default function VerifyOtp() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F5F6FA',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -168,63 +169,153 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 20,
     paddingVertical: 30,
     paddingHorizontal: 20,
     alignItems: 'center',
-    elevation: 6,
+
+    // 🔥 premium shadow
+    elevation: 8,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.12,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 5 },
   },
 
   logo: {
-  width: 180,
-  height: 170,
-  resizeMode: 'contain',
-  marginBottom: 15,
-},
+    width: 140,
+    height: 120,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
 
   title: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: '700',
     marginBottom: 20,
-    color: '#000',
+    color: '#222',
+    letterSpacing: 0.5,
   },
 
   otpRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
-    marginBottom: 25,
+    width: '85%',
+    marginBottom: 30,
   },
 
+  // 🔥 OTP INPUT (premium)
   otpInput: {
-    width: 52,
-    height: 52,
-    borderRadius: 7,
-    backgroundColor: '#F1F1F1',
+    width: 55,
+    height: 55,
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+
     textAlign: 'center',
-    fontSize: 25,
-    fontWeight: '600',
+    fontSize: 22,
+    fontWeight: '700',
     color: '#000',
-    borderColor: '#999999',
-    borderWidth: 1,
+
+    borderWidth: 1.5,
+    borderColor: '#E5E5E5',
+
+    // shadow feel
+    elevation: 2,
   },
 
+  // 🔥 BUTTON (brand orange)
   btn: {
-    backgroundColor: '#3F5E9A',
+    backgroundColor: '#F07C00',
     width: '100%',
-    height: 50,
-    borderRadius: 10,
+    height: 52,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
   },
 
   btnText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     padding: 20,
+//   },
+
+//   card: {
+//     width: '100%',
+//     backgroundColor: '#fff',
+//     borderRadius: 16,
+//     paddingVertical: 30,
+//     paddingHorizontal: 20,
+//     alignItems: 'center',
+//     elevation: 6,
+//     shadowColor: '#000',
+//     shadowOpacity: 0.1,
+//     shadowRadius: 10,
+//     shadowOffset: { width: 0, height: 5 },
+//   },
+
+//   logo: {
+//   width: 180,
+//   height: 170,
+//   resizeMode: 'contain',
+//   marginBottom: 15,
+// },
+
+//   title: {
+//     fontSize: 22,
+//     fontWeight: '600',
+//     marginBottom: 20,
+//     color: '#000',
+//   },
+
+//   otpRow: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     width: '80%',
+//     marginBottom: 25,
+//   },
+
+//   otpInput: {
+//     width: 52,
+//     height: 52,
+//     borderRadius: 7,
+//     backgroundColor: '#F1F1F1',
+//     textAlign: 'center',
+//     fontSize: 25,
+//     fontWeight: '600',
+//     color: '#000',
+//     borderColor: '#999999',
+//     borderWidth: 1,
+//   },
+
+//   btn: {
+//     backgroundColor: '#3F5E9A',
+//     width: '100%',
+//     height: 50,
+//     borderRadius: 10,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+
+//   btnText: {
+//     color: '#fff',
+//     fontSize: 16,
+//     fontWeight: '600',
+//   },
+// });

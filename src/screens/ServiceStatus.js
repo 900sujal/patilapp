@@ -84,6 +84,13 @@ export default function ServiceStatus() {
         navigation={navigation}
       />
 
+<View style={styles.topSection}>
+  <Text style={styles.screenTitle}>Your Requests</Text>
+  <Text style={styles.screenSubtitle}>
+    Track and rate your service history
+  </Text>
+</View>
+
       <View style={styles.cardContainer}>
         <View style={styles.header}>
           {/* <Feather
@@ -109,8 +116,10 @@ export default function ServiceStatus() {
                 <Text style={styles.value}>{item.request_no}</Text>
               </View>
 
-              <Text>Service Name - {item.title}</Text>
-              <Text>Date - {item.post_date}</Text>
+            <Text style={styles.infoText}>Service: {item.title}</Text>
+            <Text style={styles.infoText}>Date: {item.post_date}</Text>
+
+
 
               <View style={styles.bottomRow}>
                 <View style={styles.stars}>
@@ -168,85 +177,225 @@ export default function ServiceStatus() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F4F6FA",
   },
-  overlay: {
-    flex: 1,
-    alignItems: "center",
-  },
+
   cardContainer: {
-    width: "100%",
-    backgroundColor: "#fff",
-    padding: 14,
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 10,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
+
+  // 🔥 TOP SECTION
+  topSection: {
+    paddingHorizontal: 16,
+    marginTop: 10,
+    marginBottom: 6,
   },
-  headerTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    marginLeft: 12,
-    color: "#000",
+
+  screenTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#222",
   },
+
+  screenSubtitle: {
+    fontSize: 13,
+    color: "#777",
+    marginTop: 3,
+  },
+
+  // 🔥 CARD
   statusCard: {
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 15,
-    borderColor: "#E8E8E8",
-    borderWidth: 1,
-    
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 16,
+
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
   },
+
   row: {
     flexDirection: "row",
-    marginBottom: 4,
+    flexWrap: "wrap",
+    marginBottom: 6,
   },
+
   label: {
-    width: 100,
     fontSize: 13,
-    color: "#555",
+    color: "#888",
+    fontWeight: "600",
   },
+
   value: {
     fontSize: 13,
     color: "#000",
+    marginLeft: 6,
+    fontWeight: "600",
   },
+
+  infoText: {
+    fontSize: 14,
+    color: "#444",
+    marginTop: 4,
+  },
+
+  // 🔥 STATUS BADGE (NEW PREMIUM)
+  statusBadge: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    backgroundColor: "#E8F5E9",
+  },
+
+  statusText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#2E7D32",
+  },
+
   bottomRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 12,
   },
+
   stars: {
     flexDirection: "row",
-    gap: 6,
   },
+
+  // 🔥 BUTTON (better spacing)
   btn: {
     backgroundColor: "#F07C00",
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 6,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+    borderRadius: 25,
+
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
   },
+
   btnDisabled: {
     backgroundColor: "#E0E0E0",
   },
+
   btnText: {
     color: "#fff",
-    fontSize: 12,
-    fontWeight: "500",
+    fontSize: 13,
+    fontWeight: "700",
   },
+
   btnTextDisabled: {
     color: "#999",
   },
-  divider: {
-    height: 1,
-    backgroundColor: "#EBEBEB",
-    marginVertical: 10,
+
+  emptyText: {
+    textAlign: "center",
+    marginTop: 50,
+    color: "#999",
+    fontSize: 14,
   },
+
   loader: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
 });
+
+// const styles = StyleSheet.create({
+//   safeArea: {
+//     flex: 1,
+//     backgroundColor: "#FFFFFF",
+//   },
+//   overlay: {
+//     flex: 1,
+//     alignItems: "center",
+//   },
+//   cardContainer: {
+//     width: "100%",
+//     backgroundColor: "#fff",
+//     padding: 14,
+//   },
+//   header: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     marginBottom: 10,
+//   },
+//   headerTitle: {
+//     fontSize: 14,
+//     fontWeight: "600",
+//     marginLeft: 12,
+//     color: "#000",
+//   },
+//   statusCard: {
+//     backgroundColor: "#fff",
+//     borderRadius: 10,
+//     padding: 12,
+//     marginBottom: 15,
+//     borderColor: "#E8E8E8",
+//     borderWidth: 1,
+    
+//   },
+//   row: {
+//     flexDirection: "row",
+//     marginBottom: 4,
+//   },
+//   label: {
+//     width: 100,
+//     fontSize: 13,
+//     color: "#555",
+//   },
+//   value: {
+//     fontSize: 13,
+//     color: "#000",
+//   },
+//   bottomRow: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     marginTop: 8,
+//   },
+//   stars: {
+//     flexDirection: "row",
+//     gap: 6,
+//   },
+//   btn: {
+//     backgroundColor: "#F07C00",
+//     paddingHorizontal: 14,
+//     paddingVertical: 6,
+//     borderRadius: 6,
+//   },
+//   btnDisabled: {
+//     backgroundColor: "#E0E0E0",
+//   },
+//   btnText: {
+//     color: "#fff",
+//     fontSize: 12,
+//     fontWeight: "500",
+//   },
+//   btnTextDisabled: {
+//     color: "#999",
+//   },
+//   divider: {
+//     height: 1,
+//     backgroundColor: "#EBEBEB",
+//     marginVertical: 10,
+//   },
+//   loader: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+// });

@@ -30,6 +30,8 @@ export default function ServiceRequest() {
   const [modalType, setModalType] = useState('success');
   const [afterCloseAction, setAfterCloseAction] = useState(null);
 
+  const [focused, setFocused] = useState(null);
+
   const serviceId = route?.params?.id || '';
   const serviceName = route?.params?.serviceName || '';
 
@@ -299,78 +301,173 @@ export default function ServiceRequest() {
   );
 }
 
+// const styles = StyleSheet.create({
+//   safeArea: {
+//     flex: 1,
+//     backgroundColor: '#FDFDFD',
+//   },
+
+//   overlay: {
+//     flex: 1,
+//     backgroundColor: '#FFFFFF',
+//     alignItems: 'center',
+//   },
+
+//   card: {
+//     width: '95%',
+//     backgroundColor: '#fff',
+//     borderRadius: 18,
+//     padding: 16,
+//     height: '100%',
+//   },
+
+//   label: {
+//     fontSize: 13,
+//     color: '#393939',
+//     marginTop: 7,
+//     marginBottom: 6,
+//     fontWeight: '500',
+//   },
+
+//   input: {
+//     backgroundColor: '#F9F9F9',
+//     borderRadius: 8,
+//     paddingHorizontal: 15,
+//     height: 44,
+//     fontSize: 14,
+//     color: '#000',
+//     marginTop: 10,
+//     borderColor: '#E8E8E8',
+//     borderWidth: 1,
+//     justifyContent: 'center',
+//   },
+
+//   row: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     gap: 10,
+//   },
+
+//   timeInput: {
+//     flex: 1,
+//   },
+
+//   btn: {
+//     backgroundColor: '#F07C00',
+//     height: 55,
+//     borderRadius: 50,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginTop: 30,
+//     marginBottom: 10,
+//   },
+
+//   btnText: {
+//     color: '#FFFFFF',
+//     fontSize: 15,
+//     fontWeight: '600',
+//   },
+
+//   divider: {
+//     height: 1,
+//     backgroundColor: '#EBEBEB',
+//     width: '900',
+//     marginLeft: -22,
+//     marginTop: 13,
+//   },
+// });
+
+
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FDFDFD',
+    backgroundColor: '#F5F6FA',
   },
 
   overlay: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
     alignItems: 'center',
   },
 
   card: {
-    width: '95%',
+    width: '92%',
     backgroundColor: '#fff',
-    borderRadius: 18,
-    padding: 16,
-    height: '100%',
+    borderRadius: 20,
+    padding: 18,
+    marginTop: 10,
+
+    // 🔥 premium shadow
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
   },
 
+  // 🔥 LABEL (Premium + brand color)
   label: {
     fontSize: 13,
-    color: '#393939',
-    marginTop: 7,
+    color: '#F07C00',
+    marginTop: 12,
     marginBottom: 6,
-    fontWeight: '500',
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
 
+  // 🔥 INPUT (clean + modern)
   input: {
-    backgroundColor: '#F9F9F9',
-    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
     paddingHorizontal: 15,
-    height: 44,
+    height: 48,
     fontSize: 14,
     color: '#000',
-    marginTop: 10,
-    borderColor: '#E8E8E8',
-    borderWidth: 1,
+
+    borderWidth: 1.2,
+    borderColor: '#E5E5E5',
+
     justifyContent: 'center',
   },
 
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 10,
+    gap: 12,
   },
 
   timeInput: {
     flex: 1,
   },
 
+  // 🔥 BUTTON (premium)
   btn: {
     backgroundColor: '#F07C00',
     height: 55,
-    borderRadius: 50,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 15,
+
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
   },
 
   btnText: {
     color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 
   divider: {
     height: 1,
     backgroundColor: '#EBEBEB',
-    width: '900',
-    marginLeft: -22,
+    width: '100%',
     marginTop: 13,
   },
 });

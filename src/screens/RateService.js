@@ -128,55 +128,128 @@ export default function RateService() {
   );
 }
 
+
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F5F6FA',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   card: {
-    width: '88%',
+    width: '90%',
     backgroundColor: '#fff',
-    borderRadius: 22,
-    paddingVertical: 40,
+    borderRadius: 24,
+    paddingVertical: 35,
     paddingHorizontal: 20,
     alignItems: 'center',
+
+    // 🔥 premium shadow
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
   },
 
-  illustration: {
-    marginBottom: 20,
+  logo: {
+    width: 140,
+    height: 120,
+    marginBottom: 10,
   },
 
   title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#222',
     marginBottom: 20,
+    textAlign: 'center',
   },
 
+  // 🔥 STAR ROW
   starRow: {
     flexDirection: 'row',
-    marginBottom: 40,
-    gap: 12,
+    justifyContent: 'center',
+    marginBottom: 35,
   },
 
+  // (spacing controlled inline, safe for all devices)
+
+  // 🔥 BUTTON
   btn: {
     backgroundColor: '#F07C00',
-    width: '110%',
-    paddingVertical: 17,
-    borderRadius: 50,
+    width: '100%',
+    height: 55,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
   },
 
   btnText: {
     color: '#FFFFFF',
-    textAlign: 'center',
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  logo: {
-    width: '188',
-    height: '198',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 });
+
+// const styles = StyleSheet.create({
+//   safeArea: {
+//     flex: 1,
+//     backgroundColor: '#FFFFFF',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+
+//   card: {
+//     width: '88%',
+//     backgroundColor: '#fff',
+//     borderRadius: 22,
+//     paddingVertical: 40,
+//     paddingHorizontal: 20,
+//     alignItems: 'center',
+//   },
+
+//   illustration: {
+//     marginBottom: 20,
+//   },
+
+//   title: {
+//     fontSize: 18,
+//     fontWeight: '600',
+//     color: '#333',
+//     marginBottom: 20,
+//   },
+
+//   starRow: {
+//     flexDirection: 'row',
+//     marginBottom: 40,
+//     gap: 12,
+//   },
+
+//   btn: {
+//     backgroundColor: '#F07C00',
+//     width: '110%',
+//     paddingVertical: 17,
+//     borderRadius: 50,
+//   },
+
+//   btnText: {
+//     color: '#FFFFFF',
+//     textAlign: 'center',
+//     fontSize: 15,
+//     fontWeight: '600',
+//   },
+//   logo: {
+//     width: '188',
+//     height: '198',
+//   },
+// });

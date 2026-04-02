@@ -39,7 +39,7 @@ export default function Notification() {
 
       </View>
 
-      <FlatList
+      {/* <FlatList
         data={DATA}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
@@ -61,7 +61,7 @@ export default function Notification() {
           </View>
 
         )}
-      />
+      /> */}
     </SafeAreaView>
   );
 }
