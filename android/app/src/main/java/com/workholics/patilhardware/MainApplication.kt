@@ -1,4 +1,4 @@
-package com.patilhardwareapp
+package com.workholics.patilhardware;
 
 import android.app.Application
 import com.facebook.react.PackageList

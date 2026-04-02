@@ -1,4 +1,4 @@
-package com.patilhardwareapp
+package com.workholics.patilhardware;
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

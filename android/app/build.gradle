@@ -77,20 +77,20 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.patilhardwareapp"
+  namespace "com.workholics.patilhardware"
     defaultConfig {
-        applicationId "com.patilhardwareapp"
+       applicationId "com.workholics.patilhardware"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 6
+        versionName "1.5"
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('patil-hardware.jks')
+            storePassword '8989495923'
+            keyAlias 'patil hardware'
+            keyPassword '8989495923'
         }
     }
     buildTypes {
