@@ -393,12 +393,12 @@ const styles = StyleSheet.create({
   card: {
     width: '92%',
     backgroundColor: '#fff',
-    borderRadius: 20,
+    borderRadius: 12,
     padding: 18,
-    marginTop: 10,
+    marginTop: 11,
 
     // 🔥 premium shadow
-    elevation: 6,
+    elevation: 4,
     shadowColor: '#000',
     shadowOpacity: 0.12,
     shadowOffset: { width: 0, height: 4 },
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   // 🔥 INPUT (clean + modern)
   input: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 15,
     paddingHorizontal: 15,
     height: 48,
     fontSize: 14,
@@ -443,8 +443,8 @@ const styles = StyleSheet.create({
   // 🔥 BUTTON (premium)
   btn: {
     backgroundColor: '#F07C00',
-    height: 55,
-    borderRadius: 30,
+    height: 50,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,

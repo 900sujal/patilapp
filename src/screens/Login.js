@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F07C00',
     width: '100%',
     height: 52,
-    borderRadius: 30,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
 
@@ -206,66 +206,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// const styles = StyleSheet.create({
-//   mainContainer: {
-//     flex: 1,
-//     backgroundColor: '#FFFFFF',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
 
-//   card: {
-//     width: '90%',
-//     backgroundColor: '#FFFFFF',
-//     borderRadius: 15,
-//     alignItems: 'center',
-//     paddingVertical: 30,
-//     paddingHorizontal: 20,
-//     elevation: 10,
-//     shadowColor: '#000',
-//     shadowOpacity: 0.15,
-//     shadowRadius: 10,
-//     shadowOffset: { width: 0, height: 5 },
-//   },
-
-//   logo: {
-//     width: 150,
-//     height: 130,
-//     marginBottom: 15,
-//   },
-
-//   title: {
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//     color: '#111',
-//     marginBottom: 25,
-//   },
-
-//   input: {
-//     width: '100%',
-//     height: 50,
-//     borderRadius: 8,
-//     backgroundColor: '#F3F3F3',
-//     borderWidth: 1,
-//     borderColor: '#E0E0E0',
-//     paddingHorizontal: 15,
-//     fontSize: 16,
-//     marginBottom: 25,
-//   },
-
-//   loginBtn: {
-//     backgroundColor: '#3F5E9A',
-//     width: 200,
-//     height: 50,
-//     borderRadius: 8,
-//     borderRadius: 8,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-
-//   loginText: {
-//     color: '#FFFFFF',
-//     fontSize: 16,
-//     fontWeight: '600',
-//   },
-// });

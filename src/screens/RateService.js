@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   card: {
     width: '90%',
     backgroundColor: '#fff',
-    borderRadius: 24,
+    borderRadius: 15,
     paddingVertical: 35,
     paddingHorizontal: 20,
     alignItems: 'center',
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F07C00',
     width: '100%',
     height: 55,
-    borderRadius: 30,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
 
@@ -201,55 +201,5 @@ const styles = StyleSheet.create({
   },
 });
 
-// const styles = StyleSheet.create({
-//   safeArea: {
-//     flex: 1,
-//     backgroundColor: '#FFFFFF',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
 
-//   card: {
-//     width: '88%',
-//     backgroundColor: '#fff',
-//     borderRadius: 22,
-//     paddingVertical: 40,
-//     paddingHorizontal: 20,
-//     alignItems: 'center',
-//   },
 
-//   illustration: {
-//     marginBottom: 20,
-//   },
-
-//   title: {
-//     fontSize: 18,
-//     fontWeight: '600',
-//     color: '#333',
-//     marginBottom: 20,
-//   },
-
-//   starRow: {
-//     flexDirection: 'row',
-//     marginBottom: 40,
-//     gap: 12,
-//   },
-
-//   btn: {
-//     backgroundColor: '#F07C00',
-//     width: '110%',
-//     paddingVertical: 17,
-//     borderRadius: 50,
-//   },
-
-//   btnText: {
-//     color: '#FFFFFF',
-//     textAlign: 'center',
-//     fontSize: 15,
-//     fontWeight: '600',
-//   },
-//   logo: {
-//     width: '188',
-//     height: '198',
-//   },
-// });

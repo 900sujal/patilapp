@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Feather from "react-native-vector-icons/Feather";
+import Entypo from "react-native-vector-icons/Entypo";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -124,10 +124,10 @@ export default function ServiceStatus() {
               <View style={styles.bottomRow}>
                 <View style={styles.stars}>
                   {[1, 2, 3, 4, 5].map((i) => (
-                    <Feather
+                    <Entypo
                       key={i}
                       name="star"
-                      size={17}
+                      size={19}
                       color={
                         i <= Number(item.ratting)
                           ? "#F07C00"
@@ -211,12 +211,9 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 16,
     marginBottom: 16,
-
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
+borderColor:"#D3D3D3",
+borderWidth:1,
+    
   },
 
   row: {
@@ -314,88 +311,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// const styles = StyleSheet.create({
-//   safeArea: {
-//     flex: 1,
-//     backgroundColor: "#FFFFFF",
-//   },
-//   overlay: {
-//     flex: 1,
-//     alignItems: "center",
-//   },
-//   cardContainer: {
-//     width: "100%",
-//     backgroundColor: "#fff",
-//     padding: 14,
-//   },
-//   header: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     marginBottom: 10,
-//   },
-//   headerTitle: {
-//     fontSize: 14,
-//     fontWeight: "600",
-//     marginLeft: 12,
-//     color: "#000",
-//   },
-//   statusCard: {
-//     backgroundColor: "#fff",
-//     borderRadius: 10,
-//     padding: 12,
-//     marginBottom: 15,
-//     borderColor: "#E8E8E8",
-//     borderWidth: 1,
-    
-//   },
-//   row: {
-//     flexDirection: "row",
-//     marginBottom: 4,
-//   },
-//   label: {
-//     width: 100,
-//     fontSize: 13,
-//     color: "#555",
-//   },
-//   value: {
-//     fontSize: 13,
-//     color: "#000",
-//   },
-//   bottomRow: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     marginTop: 8,
-//   },
-//   stars: {
-//     flexDirection: "row",
-//     gap: 6,
-//   },
-//   btn: {
-//     backgroundColor: "#F07C00",
-//     paddingHorizontal: 14,
-//     paddingVertical: 6,
-//     borderRadius: 6,
-//   },
-//   btnDisabled: {
-//     backgroundColor: "#E0E0E0",
-//   },
-//   btnText: {
-//     color: "#fff",
-//     fontSize: 12,
-//     fontWeight: "500",
-//   },
-//   btnTextDisabled: {
-//     color: "#999",
-//   },
-//   divider: {
-//     height: 1,
-//     backgroundColor: "#EBEBEB",
-//     marginVertical: 10,
-//   },
-//   loader: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-// });
