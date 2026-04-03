@@ -6,9 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
-  StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Feather from "react-native-vector-icons/Feather";
 import Foundation from "react-native-vector-icons/Foundation";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -20,7 +18,9 @@ export default function CommonHeader({ title, navigation }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  /* ================= CHECK LOGIN ================= */
+  /* ===============================
+     CHECK LOGIN WHEN SCREEN FOCUS
+  =============================== */
   useFocusEffect(
     useCallback(() => {
       checkLogin();
@@ -32,13 +32,17 @@ export default function CommonHeader({ title, navigation }) {
     setIsLoggedIn(!!id);
   };
 
-  /* ================= LOGOUT ================= */
+  /* ===============================
+     LOGOUT FUNCTION
+  =============================== */
   const logout = async () => {
     try {
       await AsyncStorage.removeItem("unique_id");
+
       setIsLoggedIn(false);
       setDrawerOpen(false);
 
+      // reset stack (no back)
       navigation.reset({
         index: 0,
         routes: [{ name: "Login" }],
@@ -48,11 +52,18 @@ export default function CommonHeader({ title, navigation }) {
     }
   };
 
+  /* ===============================
+     CONFIRM ALERT
+  =============================== */
   const confirmLogout = () => {
-    Alert.alert("Logout", "Are you sure you want to logout?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: logout },
-    ]);
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Yes", onPress: logout },
+      ]
+    );
   };
 
   const go = (screen) => {
@@ -64,25 +75,20 @@ export default function CommonHeader({ title, navigation }) {
 
   return (
     <>
-      {/* STATUS BAR */}
-      <StatusBar backgroundColor="#FDFDFD" barStyle="dark-content" />
+      {/* ================= HEADER ================= */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{title}</Text>
 
-      {/* HEADER (FIXED TOP SPACE) */}
-      <SafeAreaView edges={["top"]} style={styles.safeHeader}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>{title}</Text>
-
-          <TouchableOpacity onPress={() => setDrawerOpen(true)}>
-            <View style={styles.menuout}>
-              <Feather name="align-center" size={22} color="#fff" />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+        <TouchableOpacity onPress={() => setDrawerOpen(true)}>
+          <View style={styles.menuout}>
+            <Feather name="align-center" size={22} color="#fff" />
+          </View>
+        </TouchableOpacity>
+      </View>
 
       <Divider />
 
-      {/* DRAWER */}
+      {/* ================= DRAWER ================= */}
       <Modal
         visible={drawerOpen}
         transparent
@@ -96,7 +102,7 @@ export default function CommonHeader({ title, navigation }) {
         />
 
         <View style={styles.drawer}>
-          {/* HEADER */}
+          {/* Drawer Header */}
           <View style={styles.drawerHeader}>
             <Text style={styles.drawerTitle}>{title}</Text>
 
@@ -109,13 +115,13 @@ export default function CommonHeader({ title, navigation }) {
 
           <Divider />
 
-          {/* HOME */}
+          {/* Home */}
           <TouchableOpacity style={styles.drawerItem} onPress={() => go("Home")}>
             <Foundation name="home" size={24} color="#F07C00" />
             <Text style={styles.drawerText}>Home</Text>
           </TouchableOpacity>
 
-          {/* REQUEST STATUS */}
+          {/* Request Status */}
           <TouchableOpacity
             style={styles.drawerItem}
             onPress={() =>
@@ -126,7 +132,7 @@ export default function CommonHeader({ title, navigation }) {
             <Text style={styles.drawerText}>Request Status</Text>
           </TouchableOpacity>
 
-          {/* NOTIFICATIONS */}
+          {/* Notifications */}
           <TouchableOpacity
             style={styles.drawerItem}
             onPress={() => go("Notifications")}
@@ -135,7 +141,7 @@ export default function CommonHeader({ title, navigation }) {
             <Text style={styles.drawerText}>Notification</Text>
           </TouchableOpacity>
 
-          {/* LOGIN / LOGOUT */}
+          {/* Login / Logout */}
           {isLoggedIn ? (
             <TouchableOpacity
               style={styles.drawerItem}
@@ -162,22 +168,12 @@ export default function CommonHeader({ title, navigation }) {
 /* ================= STYLES ================= */
 
 const styles = StyleSheet.create({
-  safeHeader: {
-    backgroundColor: "#FDFDFD",
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    marginTop:-46
-  },
-
   header: {
-    height: 89,
+    height: 56,
+    backgroundColor: "#FDFDFD",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 21,
-
+    paddingHorizontal: 16,
   },
 
   headerTitle: {
@@ -185,7 +181,6 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 20,
     fontWeight: "600",
-    marginTop:-6
   },
 
   divider: {
