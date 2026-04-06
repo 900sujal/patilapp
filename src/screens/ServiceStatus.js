@@ -13,6 +13,8 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import CommonHeader from "../components/CommonHeader";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 
 export default function ServiceStatus() {
@@ -20,9 +22,9 @@ export default function ServiceStatus() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  
 
- 
+
+
 
   const getRequests = async () => {
     try {
@@ -57,9 +59,11 @@ export default function ServiceStatus() {
   };
 
 
-  useEffect(() => {
+  useFocusEffect(
+  useCallback(() => {
     getRequests();
-  }, []);
+  }, [])
+);
 
 
   const onRefresh = async () => {
@@ -84,12 +88,12 @@ export default function ServiceStatus() {
         navigation={navigation}
       />
 
-<View style={styles.topSection}>
-  <Text style={styles.screenTitle}>Your Requests</Text>
-  <Text style={styles.screenSubtitle}>
-    Track and rate your service history
-  </Text>
-</View>
+      <View style={styles.topSection}>
+        <Text style={styles.screenTitle}>Your Requests</Text>
+        <Text style={styles.screenSubtitle}>
+          Track and rate your service history
+        </Text>
+      </View>
 
       <View style={styles.cardContainer}>
         <View style={styles.header}>
@@ -116,8 +120,8 @@ export default function ServiceStatus() {
                 <Text style={styles.value}>{item.request_no}</Text>
               </View>
 
-            <Text style={styles.infoText}>Service: {item.title}</Text>
-            <Text style={styles.infoText}>Date: {item.post_date}</Text>
+              <Text style={styles.infoText}>Service: {item.title}</Text>
+              <Text style={styles.infoText}>Date: {item.post_date}</Text>
 
 
 
@@ -145,7 +149,7 @@ export default function ServiceStatus() {
                   disabled={item.requst_status === "1"}
                   onPress={() =>
                     navigation.navigate("RateService", {
-                      requestNo: item.request_no,
+                      requestId: item.request_no, // ✅ FIX
                       title: item.title,
                       serviceId: item.service_id,
                     })
@@ -211,9 +215,9 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 16,
     marginBottom: 16,
-borderColor:"#D3D3D3",
-borderWidth:1,
-    
+    borderColor: "#D3D3D3",
+    borderWidth: 1,
+
   },
 
   row: {

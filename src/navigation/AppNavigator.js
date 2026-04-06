@@ -11,6 +11,7 @@ import RateService from "../screens/RateService";
 import Notifications from "../screens/Notifications";
 import Login from "../screens/Login";
 import Otpverification from './../screens/Otpverification';
+import Otp from './../screens/Otp';
 
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen name="Login" component={Login} />
          <Stack.Screen name="Otpverification" component={Otpverification} />
+         <Stack.Screen name="Otp" component={Otp} />
          
       </Stack.Navigator>
     </NavigationContainer>

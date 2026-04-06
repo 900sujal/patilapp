@@ -49,17 +49,28 @@ export default function RateService() {
       return;
     }
 
+    if (!requestId) {
+      showModal('Request ID missing', 'error');
+      return;
+    }
+
     try {
       setLoading(true);
 
       const userid = await AsyncStorage.getItem('userid');
       const uniqueid = await AsyncStorage.getItem('unique_id');
 
+      console.log('FINAL DEBUG 👉');
+      console.log('rating:', rating);
+      console.log('requestId:', requestId);
+      console.log('userid:', userid);
+      console.log('uniqueid:', uniqueid);
+
       const body = new URLSearchParams();
-      body.append('userid', userid);
-      body.append('requestid', requestId);
-      body.append('ratting', rating);
-      body.append('user_uniqueid', uniqueid);
+      body.append('userid', String(userid));
+      body.append('requestid', String(requestId));
+      body.append('ratting', String(rating));
+      body.append('user_uniqueid', String(uniqueid));
 
       const response = await axios.post(
         'https://patilhardware.com/MobileWeb/userRating',
@@ -68,23 +79,24 @@ export default function RateService() {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-        },
+        }
       );
+
+      console.log('API RESPONSE:', response.data);
 
       if (response.data?.re === 'true') {
         setAfterCloseAction(() => () => navigation.goBack());
         showModal('Thank you for rating!', 'success');
       } else {
-        showModal('Rating failed', 'error');
+        showModal(response.data?.msg || 'Rating failed', 'error');
       }
     } catch (error) {
-      console.log(error);
+      console.log('ERROR:', error?.response || error);
       showModal('Something went wrong', 'error');
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.card}>

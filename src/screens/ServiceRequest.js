@@ -66,6 +66,80 @@ export default function ServiceRequest() {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
+  // const handleSubmit = async () => {
+  //   const {
+  //     username,
+  //     mobileno,
+  //     address,
+  //     landmark,
+  //     serviceId,
+  //     post_date,
+  //     start_time,
+  //     end_time,
+  //   } = form;
+
+  //   if (
+  //     !username ||
+  //     !mobileno ||
+  //     !address ||
+  //     !landmark ||
+  //     !serviceId ||
+  //     !post_date ||
+  //     !start_time ||
+  //     !end_time
+  //   ) {
+  //     showModal('All fields are required', 'warning');
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+
+  //     const body = new URLSearchParams();
+  //     body.append('username', username);
+  //     body.append('serviceid', serviceId);
+  //     body.append('mobileno', mobileno);
+  //     body.append('address', address);
+  //     body.append('landmark', landmark);
+  //     body.append('post_date', post_date);
+  //     body.append('start_time', start_time);
+  //     body.append('end_time', end_time);
+  //     body.append('unique_id', '');
+  //     body.append(
+  //       'gcm_id',
+  //       'cu4BMzQEqLo:APA91bENusFSumQlKyzy_pmxOybtNk2XvWS4rRodpTv1X4E3Fx3Wo1YCiF-iSUQqnLaiTWUtaWqfELX_os0CuaOSJ2TDRHMYXWevr-0y9HohF86pSEIchGBl5Y9I7HNATnNsjp3eks5S',
+  //     );
+
+  //     const response = await fetch(
+  //       'https://patilhardware.com/MobileWeb/serviceRequestNew',
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/x-www-form-urlencoded',
+  //         },
+  //         body: body.toString(),
+  //       },
+  //     );
+
+  //     const json = await response.json();
+
+  //     console.log('SERVICE RESPONSE ===>', json);
+
+  //     await AsyncStorage.setItem('userid', json?.userid?.toString() || '');
+  //     await AsyncStorage.setItem('unique_id', json?.uniqueid?.toString() || '');
+
+  //     setAfterCloseAction(() => () => navigation.navigate('Otp'));
+  //     showModal('OTP sent on your WhatsApp', 'success');
+  //   } catch (error) {
+  //     console.log('Service Error:', error);
+  //     showModal('Something went wrong', 'error');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
   const handleSubmit = async () => {
     const {
       username,
@@ -78,6 +152,7 @@ export default function ServiceRequest() {
       end_time,
     } = form;
 
+    // ✅ Validation
     if (
       !username ||
       !mobileno ||
@@ -104,11 +179,17 @@ export default function ServiceRequest() {
       body.append('post_date', post_date);
       body.append('start_time', start_time);
       body.append('end_time', end_time);
-      body.append('unique_id', '');
+
+      // ⚠️ agar unique_id already hai to send karo
+      const existingUniqueId = await AsyncStorage.getItem('unique_id');
+      body.append('unique_id', existingUniqueId || '');
+
       body.append(
         'gcm_id',
-        'cu4BMzQEqLo:APA91bENusFSumQlKyzy_pmxOybtNk2XvWS4rRodpTv1X4E3Fx3Wo1YCiF-iSUQqnLaiTWUtaWqfELX_os0CuaOSJ2TDRHMYXWevr-0y9HohF86pSEIchGBl5Y9I7HNATnNsjp3eks5S',
+        'cu4BMzQEqLo:APA91bENusFSumQlKyzy_pmxOybtNk2XvWS4rRodpTv1X4E3Fx3Wo1YCiF-iSUQqnLaiTWUtaWqfELX_os0CuaOSJ2TDRHMYXWevr-0y9HohF86pSEIchGBl5Y9I7HNATnNsjp3eks5S'
       );
+
+      console.log('REQUEST BODY:', body.toString());
 
       const response = await fetch(
         'https://patilhardware.com/MobileWeb/serviceRequestNew',
@@ -118,20 +199,46 @@ export default function ServiceRequest() {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: body.toString(),
-        },
+        }
       );
 
       const json = await response.json();
+
       console.log('SERVICE RESPONSE ===>', json);
 
-      await AsyncStorage.setItem('userid', json?.userid?.toString() || '');
-      await AsyncStorage.setItem('unique_id', json?.uniqueid?.toString() || '');
+      // ✅ IMPORTANT CHECK
+      if (json?.re === 'true') {
+        const userId = json?.userid?.toString();
+        const uniqueId = json?.uniqueid?.toString();
 
-      setAfterCloseAction(() => () => navigation.navigate('Otp'));
-      showModal('OTP sent on your WhatsApp', 'success');
+        console.log('Saving USERID:', userId);
+        console.log('Saving UNIQUEID:', uniqueId);
+
+        // ✅ Save safely
+        if (userId) {
+          await AsyncStorage.setItem('userid', userId);
+        }
+
+        if (uniqueId) {
+          await AsyncStorage.setItem('unique_id', uniqueId);
+        }
+
+        // 🧪 Debug check (remove later)
+        const testUser = await AsyncStorage.getItem('userid');
+        const testUnique = await AsyncStorage.getItem('unique_id');
+
+        console.log('AFTER SAVE USERID:', testUser);
+        console.log('AFTER SAVE UNIQUEID:', testUnique);
+
+        // ✅ Navigate after modal
+        setAfterCloseAction(() => () => navigation.navigate('Otp'));
+        showModal(json?.msg || 'OTP sent successfully', 'success');
+      } else {
+        showModal(json?.msg || 'Request failed', 'error');
+      }
     } catch (error) {
       console.log('Service Error:', error);
-      showModal('Something went wrong', 'error');
+      showModal('Something went wrong. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
